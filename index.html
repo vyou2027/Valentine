@@ -16,7 +16,7 @@
             display: none;
         }
         h1 {
-            font-size: 7rem; /* Fixed header size */
+            font-size: 7rem;
             font-weight: bold;
         }
         .btn {
@@ -41,15 +41,35 @@
         .btn-no {
             background-color: #ef4444;
             color: white;
+            position: relative;
+            animation: floatUpDown 0.6s infinite ease-in-out alternate;
         }
         .btn-no:hover {
             background-color: #b91c1c;
         }
+
+        /* Faster up and down movement */
+        @keyframes floatUpDown {
+            0% {
+                transform: translateY(-8px);
+            }
+            100% {
+                transform: translateY(8px);
+            }
+        }
+        
+        .btn-no {
+    background-color: #ef4444;
+    color: white;
+    position: relative;
+    animation: floatUpDown 0.3s infinite ease-in-out alternate;
+}
+
         .button-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
+            gap: 40px; /* Keeps buttons next to each other */
             margin-top: 20px;
         }
         .image-container {
@@ -113,7 +133,7 @@
 
     <!-- Second Screen -->
     <div id="newScreen" class="hidden flex flex-col items-center justify-center h-screen text-center relative">
-        <h1 class="text-6xl font-bold text-red-500 mb-4">Happy 3rd Valentine's together ! 🎉</h1>
+        <h1 class="text-6xl font-bold text-red-500 mb-4">Happy 3rd Valentine's together! 🎉</h1>
         <img id="newImage" src="pic1.jpg" alt="Your Surprise Image" class="w-[500px] drop-shadow-lg rounded-lg">
         <div id="heartContainer"></div>
     </div>
@@ -135,24 +155,25 @@
 
         let messageIndex = 0;
         let lastMessageReached = false;
-        let noBtnSize = 200; // Initial button width
-        const minNoBtnSize = 50; // Minimum button size
+        let noBtnSize = 200;
+        const minNoBtnSize = 50;
 
         function moveNoButton() {
             if (lastMessageReached) {
-                noBtn.style.display = "none"; // Hide the "No" button after the last message
+                noBtn.style.display = "none";
                 return;
             }
 
+            // Move the button to a new random position within the screen
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
             const buttonWidth = noBtn.offsetWidth;
             const buttonHeight = noBtn.offsetHeight;
 
-            const maxX = viewportWidth - buttonWidth - 100;
-            const maxY = viewportHeight - buttonHeight - 200;
-            const minX = 100;
-            const minY = 300;
+            const maxX = viewportWidth - buttonWidth - 50;
+            const maxY = viewportHeight - buttonHeight - 50;
+            const minX = 50;
+            const minY = 50;
 
             const x = Math.random() * (maxX - minX) + minX;
             const y = Math.random() * (maxY - minY) + minY;
@@ -160,6 +181,9 @@
             noBtn.style.position = "absolute";
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
+
+            // Ensure the animation continues at the new position
+            noBtn.style.animation = "floatUpDown 0.3s infinite ease-in-out alternate";
 
             // Reduce button size each time it's clicked
             if (noBtnSize > minNoBtnSize) {
@@ -200,42 +224,6 @@
             setTimeout(() => {
                 noMessage.remove();
             }, 2500);
-        }
-
-        function showLoveMessage() {
-            document.querySelectorAll(".message-box").forEach(msg => msg.remove());
-
-            valentineScreen.style.opacity = "0";
-
-            setTimeout(() => {
-                valentineScreen.classList.add("hidden");
-                newScreen.classList.remove("hidden");
-                startFloatingHearts();
-            }, 1000);
-        }
-
-        function startFloatingHearts() {
-            setInterval(() => {
-                createFloatingHeart();
-            }, 500);
-        }
-
-        function createFloatingHeart() {
-            const heart = document.createElement("div");
-            heart.innerHTML = "❤️";
-            heart.classList.add("floating-heart");
-
-            const startX = Math.random() * window.innerWidth * 0.8;
-            const size = Math.random() * 1.5 + 0.8;
-
-            heart.style.left = `${startX}px`;
-            heart.style.fontSize = `${size}rem`;
-
-            heartContainer.appendChild(heart);
-
-            setTimeout(() => {
-                heart.remove();
-            }, 4000);
         }
     </script>
 </body>
