@@ -104,18 +104,17 @@
             <img id="mainImage" src="pic.png" alt="Mocha and Milk" class="drop-shadow-lg rounded-lg">
         </div>
 
-        <!-- Buttons Now Stay Side by Side -->
+        <!-- Buttons -->
         <div class="button-container">
             <button class="btn btn-yes" onclick="showLoveMessage()">Yes ❤️</button>
             <button id="noBtn" class="btn btn-no" onclick="moveNoButton()">No 💔</button>
         </div>
     </div>
 
-    <!-- Second Screen (Hidden at First, Now on Same Page) -->
+    <!-- Second Screen -->
     <div id="newScreen" class="hidden flex flex-col items-center justify-center h-screen text-center relative">
-        <h1 class="text-6xl font-bold text-red-500 mb-4">Happy Valentine's! 🎉</h1>
+        <h1 class="text-6xl font-bold text-red-500 mb-4">Happy 2nd Valentine's! 🎉</h1>
         <img id="newImage" src="pic1.jpg" alt="Your Surprise Image" class="w-[500px] drop-shadow-lg rounded-lg">
-        <!-- Floating Hearts Container (Only Appears on Second Screen) -->
         <div id="heartContainer"></div>
     </div>
 
@@ -136,9 +135,14 @@
 
         let messageIndex = 0;
         let lastMessageReached = false;
+        let noBtnSize = 200; // Initial button width
+        const minNoBtnSize = 50; // Minimum button size
 
         function moveNoButton() {
-            if (lastMessageReached) return;
+            if (lastMessageReached) {
+                noBtn.style.display = "none"; // Hide the "No" button after the last message
+                return;
+            }
 
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
@@ -156,6 +160,14 @@
             noBtn.style.position = "absolute";
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
+
+            // Reduce button size each time it's clicked
+            if (noBtnSize > minNoBtnSize) {
+                noBtnSize -= 20;
+                noBtn.style.width = `${noBtnSize}px`;
+                noBtn.style.fontSize = `${noBtnSize * 0.1}px`;
+                noBtn.style.padding = `${noBtnSize * 0.05}px ${noBtnSize * 0.1}px`;
+            }
 
             showNoMessage();
         }
