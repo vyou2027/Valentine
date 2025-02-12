@@ -65,6 +65,18 @@
     animation: floatUpDown 0.3s infinite ease-in-out alternate;
 }
 
+/* Fade out animation */
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Fade in animation */
+.fade-in {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
         .button-container {
             display: flex;
             justify-content: center;
@@ -150,7 +162,7 @@
             "But.. But... 😭",
             "Try clicking Yes instead! 😆",
             "I SAID CLICK YES 💞",
-            "FINE! BYE ! 🏃💨"
+            "FINE! HMPH ! 🏃💨"
         ];
 
         let messageIndex = 0;
@@ -183,7 +195,7 @@
             noBtn.style.top = `${y}px`;
 
             // Ensure the animation continues at the new position
-            noBtn.style.animation = "floatUpDown 0.3s infinite ease-in-out alternate";
+           noBtn.style.animation = "floatUpDown 0.3s infinite ease-in-out alternate";
 
             // Reduce button size each time it's clicked
             if (noBtnSize > minNoBtnSize) {
@@ -225,6 +237,45 @@
                 noMessage.remove();
             }, 2500);
         }
+        function showLoveMessage() {
+    document.querySelectorAll(".message-box").forEach(msg => msg.remove());
+
+    // Add fade-out effect to first screen
+    valentineScreen.classList.add("fade-out");
+
+    setTimeout(() => {
+        valentineScreen.classList.add("hidden"); // Hide first screen
+        newScreen.classList.remove("hidden"); // Show second screen
+        newScreen.classList.add("fade-in"); // Apply fade-in effect
+        startFloatingHearts();
+    }, 1000); // 1-second delay before transition
+}
+
+function startFloatingHearts() {
+    setInterval(() => {
+        createFloatingHeart();
+    }, 250); // ⬅️ Increased from 500ms to 250ms for more hearts
+}
+
+function createFloatingHeart() {
+    const heart = document.createElement("div");
+    heart.innerHTML = "❤️";
+    heart.classList.add("floating-heart");
+
+    const startX = Math.random() * window.innerWidth;
+    const size = Math.random() * 2 + 1; // ⬅️ Random size between 1x and 3x
+    const duration = Math.random() * 3 + 2; // ⬅️ Random float time between 2s - 5s
+
+    heart.style.left = `${startX}px`;
+    heart.style.fontSize = `${size}rem`;
+    heart.style.animation = `floatUp ${duration}s linear infinite`;
+
+    heartContainer.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, duration * 1000); // Remove after its animation ends
+}
     </script>
 </body>
 </html>
